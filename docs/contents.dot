@@ -1,0 +1,12 @@
+// docs/contents.dot
+// Render: dot -Tsvg docs/contents.dot -o docs/contents.svg
+digraph contents {
+  graph [bgcolor="white", pad=0.25, nodesep=0.4, ranksep=0.65];
+  node [shape=record, fontname="Arial", fontsize=12, margin="0.15,0.1"];
+  edge [fontname="Arial", fontsize=10, arrowsize=0.7];
+  root [label="S99Base", shape=box];
+  release [label="{release|ghreleases: GitHub releases + assets\lmdlocale: localized Markdown\lversion: release tag comparison\l}"];
+  work [label="{work|applife: application shutdown\ldaemon: HTTP over Unix sockets\l}"];
+  common [label="{common|ttlcache: shared TTL cache\lpool: bounded worker pool\l}"];
+  root -> { release work common } [dir=none];
+}

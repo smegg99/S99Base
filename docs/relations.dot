@@ -1,0 +1,13 @@
+// docs/relations.dot
+// Render: dot -Tsvg docs/relations.dot -o docs/relations.svg
+digraph relations {
+  graph [bgcolor="white", pad=0.25, nodesep=0.4, ranksep=0.65];
+  node [shape=record, fontname="Arial", fontsize=12, margin="0.15,0.1"];
+  edge [fontname="Arial", fontsize=10, arrowsize=0.7];
+  node [shape=box];
+  { rank=same; ab [label="S99AB"]; wails [label="S99Wails"]; }
+  base [label="S99Base"];
+  ab -> base [label="Go: release/releases imports\l  release/ghreleases\l  release/mdlocale\l  common/ttlcache\l"];
+  wails -> base [label="Go: shell/update imports\l  release/ghreleases\l  release/mdlocale\l  release/version\l"];
+  wails -> ab [style=dashed, constraint=false, label="Optional frontendgen --s99ab\nTypeScript: /appearance, /tabs"];
+}
