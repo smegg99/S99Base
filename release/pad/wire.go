@@ -37,22 +37,22 @@ type companyInfo struct {
 }
 
 type contactInfo struct {
-	AuthorFirstName  blank `xml:"Author_First_Name"`
-	AuthorLastName   blank `xml:"Author_Last_Name"`
-	AuthorEmail      blank `xml:"Author_Email"`
-	ContactFirstName blank `xml:"Contact_First_Name"`
-	ContactLastName  blank `xml:"Contact_Last_Name"`
-	ContactEmail     blank `xml:"Contact_Email"`
+	AuthorFirstName  blank  `xml:"Author_First_Name"`
+	AuthorLastName   blank  `xml:"Author_Last_Name"`
+	AuthorEmail      string `xml:"Author_Email"`
+	ContactFirstName blank  `xml:"Contact_First_Name"`
+	ContactLastName  blank  `xml:"Contact_Last_Name"`
+	ContactEmail     string `xml:"Contact_Email"`
 }
 
 type supportInfo struct {
-	SalesEmail   blank `xml:"Sales_Email"`
-	SupportEmail blank `xml:"Support_Email"`
-	GeneralEmail blank `xml:"General_Email"`
-	SalesPhone   blank `xml:"Sales_Phone"`
-	SupportPhone blank `xml:"Support_Phone"`
-	GeneralPhone blank `xml:"General_Phone"`
-	FaxPhone     blank `xml:"Fax_Phone"`
+	SalesEmail   string `xml:"Sales_Email"`
+	SupportEmail string `xml:"Support_Email"`
+	GeneralEmail string `xml:"General_Email"`
+	SalesPhone   blank  `xml:"Sales_Phone"`
+	SupportPhone blank  `xml:"Support_Phone"`
+	GeneralPhone blank  `xml:"General_Phone"`
+	FaxPhone     blank  `xml:"Fax_Phone"`
 }
 
 type programInfo struct {

@@ -3,8 +3,8 @@
 // Package pad writes one release as a self-hosted PAD 3.11 document (XML_DIZ_INFO).
 //
 // Departures from 3.11: URLs may be https, as PAD 4.0 allows; OS names are written
-// as given, so modern Windows names fit; Program_Type is always Freeware; contact
-// mailboxes, address, cost and expiry fields stay empty.
+// as given, so modern Windows names fit; Program_Type is always Freeware; one
+// optional mailbox fills every email field; names, address, cost and expiry stay empty.
 package pad
 
 import (
@@ -19,6 +19,7 @@ import (
 type Product struct {
 	Publisher    string // Company_Name, 2-40 characters
 	PublisherURL string // Company_WebSite_URL; a public contact page fits
+	Email        string // optional public mailbox written to every email field
 	Name         string // Program_Name without a version, 1-40 characters
 
 	ReleaseStatus    string   // Program_Release_Status, such as "Minor Update"
@@ -78,7 +79,12 @@ func newDocument(p Product, in Installer) *document {
 	bytes, k, mb := sizes(in.Size)
 	return &document{
 		Version: versionInfo{Version: "3.11", Editor: "github.com/smegg99/s99base/release/pad"},
-		Company: companyInfo{Name: p.Publisher, Website: p.PublisherURL},
+		Company: companyInfo{
+			Name:    p.Publisher,
+			Website: p.PublisherURL,
+			Contact: contactInfo{AuthorEmail: p.Email, ContactEmail: p.Email},
+			Support: supportInfo{SalesEmail: p.Email, SupportEmail: p.Email, GeneralEmail: p.Email},
+		},
 		Program: programInfo{
 			Name:             p.Name,
 			Version:          in.Version,

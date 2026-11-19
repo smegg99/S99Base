@@ -21,6 +21,7 @@ func example() (Product, Installer) {
 	return Product{
 		Publisher:        "Exämple & Söns",
 		PublisherURL:     "https://example.com/contact/",
+		Email:            "support@example.com",
 		Name:             "Example Tuner",
 		ReleaseStatus:    "Minor Update",
 		InstallSupport:   "Install and Uninstall",
@@ -125,8 +126,12 @@ func TestValuesSurviveAParse(t *testing.T) {
 		"MASTER_PAD_VERSION_INFO/MASTER_PAD_VERSION":         "3.11",
 		"Company_Info/Company_Name":                          "Exämple & Söns",
 		"Company_Info/Company_WebSite_URL":                   p.PublisherURL,
-		"Company_Info/Contact_Info/Author_Email":             "",
-		"Company_Info/Support_Info/General_Email":            "",
+		"Company_Info/Contact_Info/Author_Email":             p.Email,
+		"Company_Info/Contact_Info/Contact_Email":            p.Email,
+		"Company_Info/Support_Info/Sales_Email":              p.Email,
+		"Company_Info/Support_Info/Support_Email":            p.Email,
+		"Company_Info/Support_Info/General_Email":            p.Email,
+		"Company_Info/Contact_Info/Author_First_Name":        "",
 		"Program_Info/Program_Version":                       "1.4.7",
 		"Program_Info/Program_Release_Month":                 "11",
 		"Program_Info/Program_Release_Day":                   "18",
@@ -148,6 +153,17 @@ func TestValuesSurviveAParse(t *testing.T) {
 	} {
 		if got := text[root+path]; got != want {
 			t.Errorf("%s = %q, want %q", path, got, want)
+		}
+	}
+}
+
+func TestNoEmailLeavesMailboxesEmpty(t *testing.T) {
+	p, in := example()
+	p.Email = ""
+	_, text := parse(t, mustMarshal(t, p, in))
+	for path, value := range text {
+		if strings.HasSuffix(path, "_Email") && value != "" {
+			t.Errorf("%s = %q, want empty", path, value)
 		}
 	}
 }

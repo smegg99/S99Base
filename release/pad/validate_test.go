@@ -105,6 +105,22 @@ func TestRequiredFields(t *testing.T) {
 	})
 }
 
+func TestEmail(t *testing.T) {
+	email := func(s string) func(*Product) { return func(p *Product) { p.Email = s } }
+	run(t, []edit{
+		{name: "bare address", product: email("support@smegg.me")},
+		{name: "none", product: email("")},
+		{name: "30-character local part", product: email(strings.Repeat("a", 30) + "@example.com")},
+		{name: "31-character local part", product: email(strings.Repeat("a", 31) + "@example.com"), field: "Product.Email"},
+		{name: "1-character local part", product: email("a@example.com"), field: "Product.Email"},
+		{name: "1-character top-level domain", product: email("support@example.c"), field: "Product.Email"},
+		{name: "no at sign", product: email("support.example.com"), field: "Product.Email"},
+		{name: "display name", product: email("Support <support@example.com>"), field: "Product.Email"},
+		{name: "two addresses", product: email("a1@example.com, b2@example.com"), field: "Product.Email"},
+		{name: "line break", product: email("support@example.com\n"), field: "Product.Email"},
+	})
+}
+
 func TestNamesAndVersions(t *testing.T) {
 	run(t, []edit{
 		{name: "unknown status", product: func(p *Product) { p.ReleaseStatus = "Patch" }, field: "Product.ReleaseStatus"},

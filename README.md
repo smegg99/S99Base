@@ -46,7 +46,8 @@ Package paths in the table above are relative to `github.com/smegg99/s99base`.
 `ttlcache` shares concurrent refreshes and serves the last good value if a
 refresh fails. `version` compares release tags; it does not enforce strict
 Semantic Versioning. `pad` accepts https URLs and OS names newer than PAD 3.11's
-list, and leaves contact mailboxes and the postal address empty.
+list, writes one optional public mailbox to every email field, and leaves contact
+names and the postal address empty.
 
 ## Install
 

@@ -3,6 +3,7 @@ package pad
 
 import (
 	"fmt"
+	"net/mail"
 	"net/netip"
 	"net/url"
 	"regexp"
@@ -25,6 +26,7 @@ var (
 	specificCategories = []string{"Audio", "Business", "Development Tools", "Education", "Games", "Graphics", "Home/Hobby", "Internet", "Miscellaneous", "Screen Savers", "Utilities"}
 
 	versionChars = regexp.MustCompile(`^[a-zA-Z0-9_.\-]{1,15}$`)
+	emailParts   = regexp.MustCompile(`^.{2,30}@.{2,63}\..{2,20}$`)
 )
 
 // check returns the first failure in field order.
@@ -32,6 +34,7 @@ func check(p Product, in Installer) error {
 	for _, err := range []error{
 		checkText("Product.Publisher", p.Publisher, 2, 40, false),
 		checkURL("Product.PublisherURL", p.PublisherURL, nil),
+		checkEmail("Product.Email", p.Email),
 		checkText("Product.Name", p.Name, 1, 40, false),
 		checkEnum("Product.ReleaseStatus", p.ReleaseStatus, releaseStatuses, false),
 		checkEnum("Product.InstallSupport", p.InstallSupport, installSupports, false),
@@ -145,6 +148,21 @@ func checkCategory(field, s string) error {
 	class, sub, ok := strings.Cut(s, "::")
 	if !ok || strings.TrimSpace(class) == "" || strings.TrimSpace(sub) == "" {
 		return fail(field, `must be "Class::Subclass"`)
+	}
+	return nil
+}
+
+// checkEmail takes a bare address shaped like 3.11's 2-30@2-63.2-20 pattern.
+func checkEmail(field, s string) error {
+	if s == "" {
+		return nil
+	}
+	if err := checkChars(field, s, false); err != nil {
+		return err
+	}
+	addr, err := mail.ParseAddress(s)
+	if err != nil || addr.Name != "" || addr.Address != s || !emailParts.MatchString(s) {
+		return fail(field, "must be a bare address of 2-30 characters @ 2-63 . 2-20")
 	}
 	return nil
 }
