@@ -1,12 +1,13 @@
 # S99Base
 
-Shared Go building blocks for applications and libraries. The seven packages use only
+Shared Go building blocks for applications and libraries. The eight packages use only
 the standard library and `golang.org/x/sync`, and do not import one another.
 
 | Package | Purpose |
 | --- | --- |
 | [`release/ghreleases`](release/ghreleases) | Reads GitHub releases and repository stats; classifies assets by platform, architecture and kind, retaining digests. |
 | [`release/mdlocale`](release/mdlocale) | Splits Markdown into per-locale sections opened by `<!-- lang:xx -->` lines. |
+| [`release/pad`](release/pad) | Writes one release as a self-hosted PAD 3.11 XML listing for software directories; rejects copy that does not fit. |
 | [`release/version`](release/version) | Compares release tags and trims one leading `v`. |
 | [`work/applife`](work/applife) | Shuts an application down in reverse order under one deadline. |
 | [`work/daemon`](work/daemon) | Runs HTTP over a Unix socket and starts the daemon on demand. |
@@ -44,7 +45,8 @@ Package paths in the table above are relative to `github.com/smegg99/s99base`.
 `ghreleases` also reads repository stars/forks and generated source archives.
 `ttlcache` shares concurrent refreshes and serves the last good value if a
 refresh fails. `version` compares release tags; it does not enforce strict
-Semantic Versioning.
+Semantic Versioning. `pad` accepts https URLs and OS names newer than PAD 3.11's
+list, and leaves contact mailboxes and the postal address empty.
 
 ## Install
 
